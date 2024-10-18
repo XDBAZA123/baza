@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Me</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e1e;
+            color: #fff;
+            margin: 0;
+        }
+        header {
+            background-color: #2F3136;
+            padding: 20px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        header img {
+            width: 120px;
+            border-radius: 50%;
+        }
+        header h1 {
+            font-size: 2rem;
+            margin: 10px 0;
+            color: #fff;
+        }
+        nav {
+            background-color: #2F3136;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 10px 15px;
+            transition: background-color 0.3s;
+        }
+        nav ul li a:hover {
+            background-color: #444;
+            border-radius: 5px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .section {
+            background-color: #2a2a2a;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ff4757;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: #f1f1f1;
+        }
+        .form-group textarea {
+            resize: vertical;
+        }
+        .btn-submit {
+            background-color: #ff4757;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #ff6b81;
+        }
+        .success-message {
+            display: none;
+            background-color: #00b894;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #202020;
+            color: #aaa;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="bazaabt.html">About</a></li>
+            <li><a href="rrn.html">RRN</a></li>
+            <li><a href="bzcontact.html">Contact Me</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <section class="section">
+        <h2>Send Me a Message!</h2>
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Send Message</button>
+        </form>
+        <div id="successMessage" class="success-message">Message sent successfully!</div>
+    </section>
+</div>
+
+
+<script>
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const message = document.getElementById('message').value;
+
+        fetch('https://discord.com/api/webhooks/1296826594127646790/jzhg5FhUWhb_PLv-hGPed2mDy_zvwMOVE-uAj_I1mvFm8GFAwcSQg7nbOSNEA52G7irZ', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                content: `New message from ${name} (${email}):\n${message}`
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('contactForm').reset();
+            } else {
+                throw new Error('Discord webhook submission failed.');
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            alert('There was an error sending your message. Please try again later.');
+        });
+    });
+</script>
+
+</body>
+</html>
